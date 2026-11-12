@@ -110,6 +110,10 @@ GUARDED_MODULES = [
     "mcp_memory_service/harvest/harvester.py",
     "mcp_memory_service/harvest/extractor.py",
     "mcp_memory_service/harvest/auto_capture.py",
+    "mcp_memory_service/config/documents.py",
+    "mcp_memory_service/storage/migration_runner.py",
+    "mcp_memory_service/sync/litestream_config.py",
+    "mcp_memory_service/utils/directory_ingestion.py",
 ]
 
 # The levels check 6.5 looks at, verbatim.
@@ -237,6 +241,10 @@ EXTERNAL_NAMES = frozenset({
     # load, logged when the file does not exist. No other guarded module logs
     # the name, so listing it decides for nobody else.
     "resolved_path",
+    # The path sync/litestream_config.py writes its YAML config to, handed to
+    # write_config() or derived from the platform default. No other guarded
+    # module logs `config_path`, so listing it decides for nobody else.
+    "config_path",
 })
 
 # Names that are outside data in one module only, checked on top of
@@ -249,6 +257,7 @@ EXTERNAL_NAMES = frozenset({
 MODULE_EXTERNAL_NAMES = {
     "mcp_memory_service/utils/cache_manager.py": frozenset({"backend"}),
     "mcp_memory_service/embeddings/external_api.py": frozenset({"model_name"}),
+    "mcp_memory_service/storage/migration_runner.py": frozenset({"name"}),
 }
 
 # Fields of an outside object that cannot carry injectable text. An HTTP status
